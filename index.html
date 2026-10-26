@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        body {
+            background-color: #FFFDF0;
+            background-image: radial-gradient(#F6E05E 1.2px, transparent 1.2px);
+            background-size: 24px 24px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: #4A4A4A;
+            position: relative;
+        }
+
+        /* Floating Pink Hearts Background Animation */
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            bottom: -20px;
+            color: #FF69B4;
+            font-size: 20px;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.6;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-105vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            background: #FFFFFF;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(246, 224, 94, 0.4);
+            max-width: 380px;
+            width: 90%;
+            border: 2px solid #FEEBC8;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+        }
+        h1 {
+            color: #B7791F;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #718096;
+        }
+        .btn {
+            background-color: #ECC94B;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            font-size: 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(236, 201, 75, 0.4);
+            transition: 0.2s;
+        }
+        .btn:hover {
+            background-color: #D69E2E;
+        }
+        .hidden {
+            display: none;
+        }
+        input[type="password"] {
+            width: 80%;
+            padding: 10px;
+            border: 2px solid #ECC94B;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 16px;
+            outline: none;
+            margin-top: 15px;
+        }
+        .letter-box {
+            background: #FFFAF0;
+            border: 1px dashed #ECC94B;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 14px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        .flower-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .flower-card {
+            background: #FEFCBF;
+            padding: 15px;
+            border-radius: 16px;
+            cursor: pointer;
+            border: 1px solid #ECC94B;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .flower-card:hover {
+            background: #ECC94B;
+            color: white;
+        }
+        .cake-container {
+            font-size: 50px;
+            margin: 20px 0;
+            position: relative;
+        }
+        .flame {
+            font-size: 24px;
+            display: inline-block;
+            animation: flicker 0.8s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0.7; }
+        }
+        @keyframes popBlast {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .blast-effect {
+            animation: popBlast 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Pink Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Step 1: Text Password Screen -->
+    <div class="container" id="step1">
+        <h1>🔐 Enter Password</h1>
+        <p>Type the password to unlock your surprise</p>
+        <input type="password" id="passInput" placeholder="Enter password...">
+        <br>
+        <button class="btn" onclick="checkPassword()">Submit</button>
+        <p id="error-msg" style="color: #E53E3E; font-size: 12px; margin-top: 10px;"></p>
+    </div>
+
+    <!-- Step 2: Pop Blast & Greeting Screen -->
+    <div class="container hidden blast-effect" id="step2">
+        <h1>🎉 Happy Birthday, Sir! ✨</h1>
+        <p>Are you ready for your special surprises?</p>
+        <button class="btn" onclick="nextStep(3)">Let's Go 🌻</button>
+    </div>
+
+    <!-- Step 3: Flower Pop-ups -->
+    <div class="container hidden" id="step3">
+        <h1>Tap the Flowers 🌻</h1>
+        <p id="flower-hint">Tap all 4 flowers to reveal sweet wishes!</p>
+        <div class="flower-grid">
+            <div class="flower-card" id="f1" onclick="popFlower(1)">🌼 Flower 1</div>
+            <div class="flower-card" id="f2" onclick="popFlower(2)">🌻 Flower 2</div>
+            <div class="flower-card" id="f3" onclick="popFlower(3)">🌷 Flower 3</div>
+            <div class="flower-card" id="f4" onclick="popFlower(4)">🌸 Flower 4</div>
+        </div>
+        <button class="btn hidden" id="flower-next-btn" onclick="nextStep(4)">Continue ➔</button>
+    </div>
+
+    <!-- Step 4: Letter / Message -->
+    <div class="container hidden" id="step4">
+        <h1>A Message From My Heart 💌</h1>
+        <div class="letter-box">
+            <p><strong>Dear Sir,</strong><br><br>
+            Wishing you a very happy birthday! May this year bring you closer to all your dreams and fill your days with endless positivity and bright moments.<br><br>
+            Thank you for being such a wonderful presence and a great support. Have an amazing day ahead!<br><br>
+            Warm regards,<br>
+            💛</p>
+        </div>
+        <button class="btn" onclick="nextStep(5)">Next Surprise 🎂</button>
+    </div>
+
+    <!-- Step 5: Blow the Candle -->
+    <div class="container hidden" id="step5">
+        <h1>Blow the Candle 🕯️</h1>
+        <p>Make a wish and blow out the candle!</p>
+        <div class="cake-container">
+            <div id="candle-flame" class="flame">🔥</div><br>
+            🎂
+        </div>
+        <button class="btn" id="blow-btn" onclick="blowCandle()">Blow Candle 💨</button>
+        <br>
+        <button class="btn hidden" id="final-next-btn" onclick="nextStep(6)">View Final Wish ✨</button>
+    </div>
+
+    <!-- Step 6: Final Screen -->
+    <div class="container hidden" id="step6">
+        <h1>Lots of Love For You! 💛</h1>
+        <p>Once again, Happy Birthday! May your day be as bright and beautiful as your soul.</p>
+        <p style="font-size: 24px; margin: 15px 0;">🌻 🎂 ✨</p>
+        <button class="btn" onclick="location.reload()">Replay ↺</button>
+    </div>
+
+    <script>
+        const correctPassword = "smile"; // Ikkada meeru password marchukovachu
+
+        // Generate floating pink hearts automatically
+        function createHeart() {
+            const container = document.getElementById("heartsContainer");
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "🩷";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 4) + "s"; // 4 to 7 seconds
+            container.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 7000);
+        }
+        setInterval(createHeart, 500);
+
+        function checkPassword() {
+            const userVal = document.getElementById("passInput").value.trim();
+            if (userVal === correctPassword) {
+                nextStep(2);
+            } else {
+                document.getElementById("error-msg").innerText = "Incorrect password! Try again.";
+            }
+        }
+
+        function popFlower(num) {
+            const card = document.getElementById("f" + num);
+            const wishes = [
+                "✨ You make my world beautiful!",
+                "💛 You are my sunshine!",
+                "🌟 I'm lucky to have you!",
+                "🌻 You are my favorite person!"
+            ];
+            if (!card.classList.contains("popped")) {
+                card.classList.add("popped");
+                card.innerHTML = wishes[num - 1];
+                card.style.background = "#ECC94B";
+                card.style.color = "white";
+                window.poppedCount = (window.poppedCount || 0) + 1;
+
+                if (window.poppedCount === 4) {
+                    document.getElementById("flower-hint").innerText = "All wishes unlocked!";
+                    document.getElementById("flower-next-btn").classList.remove("hidden");
+                }
+            }
+        }
+
+        function blowCandle() {
+            document.getElementById("candle-flame").style.display = "none";
+            document.getElementById("blow-btn").classList.add("hidden");
+            document.getElementById("final-next-btn").classList.remove("hidden");
+        }
+
+        function nextStep(step) {
+            document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
+            document.getElementById('step' + step).classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
